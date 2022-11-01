@@ -98,33 +98,42 @@ println("test clickLemonImage")
         //  case of squeezing the lemon). That should be done in this conditional statement
 
         when (lemonadeState) {
-            SELECT -> println("SELECT")
-            SQUEEZE -> println("SELECT")
-            DRINK -> println("DRINK")
+            SELECT -> {
+                // TODO: When the image is clicked in the SELECT state, the state should become SQUEEZE
+                //  - The lemonSize variable needs to be set using the 'pick()' method in the LemonTree class
+                //  - The squeezeCount should be 0 since we haven't squeezed any lemons just yet.
+                lemonSize = lemonTree.pick()
+                squeezeCount = 0
+                lemonadeState = SQUEEZE
+                println("SELECT -> SQUEEZE")
+            }
+            SQUEEZE -> {
+                // TODO: When the image is clicked in the SQUEEZE state the squeezeCount needs to be
+                //  INCREASED by 1 and lemonSize needs to be DECREASED by 1.
+                //  - If the lemonSize has reached 0, it has been juiced and the state should become DRINK
+                //  - Additionally, lemonSize is no longer relevant and should be set to -1
+                squeezeCount += 1
+                println("squeezeCount += 1")
+                lemonSize -= 1
+                println("lemonSize -= 1")
+                if (lemonSize == 0) {
+                    lemonadeState = DRINK
+                    println("SQUEEZE -> DRINK")
+                    lemonSize = -1
+                }
+            }
+            DRINK -> {
+                // TODO: When the image is clicked in the DRINK state the state should become RESTART
+                lemonadeState = RESTART
+                println("DRINK -> RESTART")
+            }
             RESTART -> {
+                // TODO: When the image is clicked in the RESTART state the state should become SELECT
                 lemonadeState = SELECT
                 println("RESTART -> SELECT")
             }
-
-                : Transition to the SQUEEZE state,
-        set the lemonSize (the number of squeezes needed)
-                by calling the pick() method, and setting the squeezeCount (
-                the number of times the user has squeezed the lemon) to 0.
         }
-
-        // TODO: When the image is clicked in the SELECT state, the state should become SQUEEZE
-        //  - The lemonSize variable needs to be set using the 'pick()' method in the LemonTree class
-        //  - The squeezeCount should be 0 since we haven't squeezed any lemons just yet.
-
-        // TODO: When the image is clicked in the SQUEEZE state the squeezeCount needs to be
-        //  INCREASED by 1 and lemonSize needs to be DECREASED by 1.
-        //  - If the lemonSize has reached 0, it has been juiced and the state should become DRINK
-        //  - Additionally, lemonSize is no longer relevant and should be set to -1
-
-        // TODO: When the image is clicked in the DRINK state the state should become RESTART
-
-        // TODO: When the image is clicked in the RESTART state the state should become SELECT
-
+        // ????WTF????
         // TODO: lastly, before the function terminates we need to set the view elements so that the
         //  UI can reflect the correct state
     }
