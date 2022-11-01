@@ -15,6 +15,7 @@
  */
 package com.example.lemonade
 
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
@@ -91,7 +92,6 @@ class MainActivity : AppCompatActivity() {
      * This method determines the state and proceeds with the correct action.
      */
     private fun clickLemonImage() {
-println("test clickLemonImage")
         // TODO: use a conditional statement like 'if' or 'when' to track the lemonadeState
         //  when the image is clicked we may need to change state to the next step in the
         //  lemonade making progression (or at least make some changes to the current state in the
@@ -105,7 +105,7 @@ println("test clickLemonImage")
                 lemonSize = lemonTree.pick()
                 squeezeCount = 0
                 lemonadeState = SQUEEZE
-                println("SELECT -> SQUEEZE")
+
             }
             SQUEEZE -> {
                 // TODO: When the image is clicked in the SQUEEZE state the squeezeCount needs to be
@@ -113,34 +113,31 @@ println("test clickLemonImage")
                 //  - If the lemonSize has reached 0, it has been juiced and the state should become DRINK
                 //  - Additionally, lemonSize is no longer relevant and should be set to -1
                 squeezeCount += 1
-                println("squeezeCount += 1")
                 lemonSize -= 1
-                println("lemonSize -= 1")
                 if (lemonSize == 0) {
+
                     lemonadeState = DRINK
-                    println("SQUEEZE -> DRINK")
                     lemonSize = -1
                 }
             }
             DRINK -> {
                 // TODO: When the image is clicked in the DRINK state the state should become RESTART
                 lemonadeState = RESTART
-                println("DRINK -> RESTART")
             }
             RESTART -> {
                 // TODO: When the image is clicked in the RESTART state the state should become SELECT
                 lemonadeState = SELECT
-                println("RESTART -> SELECT")
             }
         }
-        // ????WTF????
         // TODO: lastly, before the function terminates we need to set the view elements so that the
         //  UI can reflect the correct state
+        setViewElements()
     }
 
     /**
      * Set up the view elements according to the state.
      */
+    @SuppressLint("SetTextI18n")
     private fun setViewElements() {
         val textAction: TextView = findViewById(R.id.text_action)
         // TODO: set up a conditional that tracks the lemonadeState
@@ -151,6 +148,26 @@ println("test clickLemonImage")
         // TODO: Additionally, for each state, the lemonImage should be set to the corresponding
         //  drawable from the drawable resources. The drawables have the same names as the strings
         //  but remember that they are drawables, not strings.
+        when (lemonadeState) {
+            SELECT -> {
+                textAction.text = resources.getString(R.string.lemon_select)
+                lemonImage?.setImageResource(R.drawable.lemon_tree)
+            }
+
+            SQUEEZE -> {
+                textAction.text =  resources.getString(R.string.lemon_squeeze)
+                lemonImage?.setImageResource(R.drawable.lemon_squeeze)
+            }
+
+            DRINK -> {
+                textAction.text = resources.getString(R.string.lemon_drink)
+                lemonImage?.setImageResource(R.drawable.lemon_drink)
+            }
+            RESTART -> {
+                textAction.text = resources.getString(R.string.lemon_empty_glass)
+                lemonImage?.setImageResource(R.drawable.lemon_restart)
+            }
+        }
     }
 
     /**
@@ -159,7 +176,6 @@ println("test clickLemonImage")
      * Long clicking the lemon image will show how many times the lemon has been squeezed.
      */
     private fun showSnackbar(): Boolean {
-        println("TEST showSnackbar")
         if (lemonadeState != SQUEEZE) {
             return false
         }
