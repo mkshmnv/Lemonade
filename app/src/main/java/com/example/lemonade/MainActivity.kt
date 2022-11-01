@@ -66,10 +66,10 @@ class MainActivity : AppCompatActivity() {
         lemonImage = findViewById(R.id.image_lemon_state)
         setViewElements()
         lemonImage!!.setOnClickListener {
-            // TODO: call the method that handles the state when the image is clicked
+            clickLemonImage()
         }
         lemonImage!!.setOnLongClickListener {
-            // TODO: replace 'false' with a call to the function that shows the squeeze count
+            showSnackbar()
             false
         }
     }
@@ -91,10 +91,26 @@ class MainActivity : AppCompatActivity() {
      * This method determines the state and proceeds with the correct action.
      */
     private fun clickLemonImage() {
+println("test clickLemonImage")
         // TODO: use a conditional statement like 'if' or 'when' to track the lemonadeState
         //  when the image is clicked we may need to change state to the next step in the
         //  lemonade making progression (or at least make some changes to the current state in the
         //  case of squeezing the lemon). That should be done in this conditional statement
+
+        when (lemonadeState) {
+            SELECT -> println("SELECT")
+            SQUEEZE -> println("SELECT")
+            DRINK -> println("DRINK")
+            RESTART -> {
+                lemonadeState = SELECT
+                println("RESTART -> SELECT")
+            }
+
+                : Transition to the SQUEEZE state,
+        set the lemonSize (the number of squeezes needed)
+                by calling the pick() method, and setting the squeezeCount (
+                the number of times the user has squeezed the lemon) to 0.
+        }
 
         // TODO: When the image is clicked in the SELECT state, the state should become SQUEEZE
         //  - The lemonSize variable needs to be set using the 'pick()' method in the LemonTree class
@@ -134,6 +150,7 @@ class MainActivity : AppCompatActivity() {
      * Long clicking the lemon image will show how many times the lemon has been squeezed.
      */
     private fun showSnackbar(): Boolean {
+        println("TEST showSnackbar")
         if (lemonadeState != SQUEEZE) {
             return false
         }
